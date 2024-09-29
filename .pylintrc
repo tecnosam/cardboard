@@ -6,9 +6,6 @@ extension-pkg-whitelist=
 # directories to the module search path.
 init-hook=
 
-# The name of the method that should be used to indicate the test case.
-# Defaults to 'test'
-test-case-classname=
 
 [FORMAT]
 # Maximum number of characters on a single line.
@@ -51,26 +48,12 @@ allow-wildcard-with-all=yes
 # List of modules to be excluded from import checking
 ignored-modules=
 
-[STRING]
-# String constants that can be skipped from checking.
-string-constants=
-
-[LOGGING]
-# Enable/disable checking of the logging module.
-check-logging-format=yes
 
 [REPORTS]
 # Set the output format for the report file.
 reports=yes
 
-# Generate a full report on the output.
-full-report=yes
-
 [TYPECHECK]
 # List of types to ignore.
 ignored-modules=
-
-[ERRORS]
-# A comma-separated list of error codes that should be ignored.
-ignored-errors=
 
