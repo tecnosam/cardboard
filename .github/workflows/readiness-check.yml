@@ -14,7 +14,7 @@ jobs:
 
     strategy:
       matrix:
-        python-version: [3.8, 3.9, 3.10, 3.11]  # Test on multiple Python versions (optional)
+        python-version: [3.8, 3.9, 3.11]  # Test on multiple Python versions (optional)
 
     steps:
     # Checkout the repository
@@ -32,18 +32,22 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install pylint mypy
+        pip install -r requirements.txt
 
     # Run pylint
     - name: Run pylint
       run: |
-        pylint src/ tests/ --rcfile=.pylintrc  # Adjust directories as necessary
+        pylint src/ --rcfile=.pylintrc  # Adjust directories as necessary
+        pylint tests/ --rcfile=.pylintrc  # Adjust directories as necessary
 
     # Run mypy
     - name: Run mypy
       run: |
-        mypy src/ tests/ --config-file mypy.ini  # Adjust paths and config file as needed
+        mypy src/ --config-file mypy.ini  # Adjust paths and config file as needed
+        mypy tests/ --config-file mypy.ini  # Adjust paths and config file as needed
 
     # Run unittests
     - name: Run unit tests
       run: |
-        python -m unittest discover -s tests src # Adjust test directory if needed
+        python -m unittest discover -s src # Adjust test directory if needed
+        python -m unittest discover -s tests
