@@ -1,0 +1,53 @@
+name: Lint, Type Check, and Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint-typecheck-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.9, 3.11]  # Test on multiple Python versions (optional)
+
+    steps:
+    # Checkout the repository
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Set up Python
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    # Install dependencies (adjust based on your requirements, e.g. use pipenv or poetry if needed)
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pylint mypy
+        pip install -r requirements.txt
+
+    # Run pylint
+    - name: Run pylint
+      run: |
+        pylint src/ --rcfile=.pylintrc  # Adjust directories as necessary
+        pylint tests/ --rcfile=.pylintrc  # Adjust directories as necessary
+
+    # Run mypy
+    - name: Run mypy
+      run: |
+        mypy src/ --config-file mypy.ini  # Adjust paths and config file as needed
+        mypy tests/ --config-file mypy.ini  # Adjust paths and config file as needed
+
+    # Run unittests
+    - name: Run unit tests
+      run: |
+        python -m unittest discover -s src # Adjust test directory if needed
+        python -m unittest discover -s tests
