@@ -1,0 +1,76 @@
+[MASTER]
+# A comma-separated list of package or module names from which C extensions can be loaded.
+extension-pkg-whitelist=
+
+# Python code to execute, usually for sys.path manipulation such as adding
+# directories to the module search path.
+init-hook=
+
+# The name of the method that should be used to indicate the test case.
+# Defaults to 'test'
+test-case-classname=
+
+[FORMAT]
+# Maximum number of characters on a single line.
+max-line-length=100
+
+# Format for the output of the message. Can be: text, json, parseable, html, or msvs.
+output-format=text
+
+[MESSAGES CONTROL]
+# Disable the message, report, category or checker with the given id(s).
+disable=C0114,C0115,C0116,W0611
+
+# Enable the message, report, category or checker with the given id(s).
+enable=
+
+[DESIGN]
+# Maximum number of arguments for a function / method
+max-args=5
+
+# Maximum number of return statements in a function
+max-returns=2
+
+# Maximum number of branches for function complexity
+max-branch=12
+
+# Maximum number of local variables for a function
+max-locals=15
+
+[VARIABLES]
+# Allowed variable name length.
+variable-rgx=[a-z_][a-z0-9_]{0,30}$
+
+# Allow constant names to be longer than 30 characters.
+const-rgx=[A-Z_][A-Z0-9_]{0,30}$
+
+[IMPORTS]
+# Allow wildcard imports.
+allow-wildcard-with-all=yes
+
+# List of modules to be excluded from import checking
+ignored-modules=
+
+[STRING]
+# String constants that can be skipped from checking.
+string-constants=
+
+[LOGGING]
+# Enable/disable checking of the logging module.
+check-logging-format=yes
+
+[REPORTS]
+# Set the output format for the report file.
+reports=yes
+
+# Generate a full report on the output.
+full-report=yes
+
+[TYPECHECK]
+# List of types to ignore.
+ignored-modules=
+
+[ERRORS]
+# A comma-separated list of error codes that should be ignored.
+ignored-errors=
+
