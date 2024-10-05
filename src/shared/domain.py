@@ -7,5 +7,7 @@
 from pydantic import BaseModel
 
 
-class BaseDomain(BaseModel):
-    ...
+class BaseDomainEntity(BaseModel):
+    """
+    Base Domain Entity class
+    """

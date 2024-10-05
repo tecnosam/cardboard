@@ -4,10 +4,10 @@
 
 from typing import Dict, Union
 from src.shared.commands import SampleCommand
-from src.shared.domain import BaseDomain
+from src.shared.domain import BaseDomainEntity
 
 
-def sample_logic(data: SampleCommand) -> Union[Dict[str, str], BaseDomain]:
+def sample_logic(data: SampleCommand) -> Union[Dict[str, str], BaseDomainEntity]:
     """Sample logic to do some stuff"""
 
     name = data.name

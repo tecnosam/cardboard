@@ -6,10 +6,11 @@ from pydantic import BaseModel
 
 
 class BaseCommand(BaseModel):
-    ...
+    """BaseCommand"""
 
 
 class SampleCommand(BaseCommand):
+    """Example Command"""
 
     name: str
     type: str
