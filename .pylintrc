@@ -1,11 +1,3 @@
-[MASTER]
-# A comma-separated list of package or module names from which C extensions can be loaded.
-extension-pkg-whitelist=
-
-# Python code to execute, usually for sys.path manipulation such as adding
-# directories to the module search path.
-init-hook=
-
 
 [FORMAT]
 # Maximum number of characters on a single line.
@@ -16,7 +8,7 @@ output-format=text
 
 [MESSAGES CONTROL]
 # Disable the message, report, category or checker with the given id(s).
-disable=C0114,C0115,C0116,W0611
+disable=C0114
 
 # Enable the message, report, category or checker with the given id(s).
 enable=
