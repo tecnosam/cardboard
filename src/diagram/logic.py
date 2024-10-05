@@ -84,6 +84,7 @@ class DiagramCRUDLogic(CRUDLogic):
 
         data = command.model_dump()
         data["provider_class"] = command.provider_class.value
+        data = self.unify_diagram_nodes(data=data)
 
         diagram = Diagram(**data)
         self.store_repo.save(diagram)
@@ -139,135 +140,18 @@ class DiagramCRUDLogic(CRUDLogic):
 
         return True
 
-
-class NodeCRUDLogic(CRUDLogic):
-
-    node_class: Type[Node]
-
-    def create(self, command: Union[ClusterCreateCommand, ResourceCreateCommand]) -> dict:
+    @classmethod
+    def unify_diagram_nodes(cls, data: dict) -> dict:
 
         """
-            Create a node and persist
+        This helper function helps us to merge clusters and resources
+        together as one list recursively (also resolves nested clusters)
         """
 
-        data = command.model_dump()
+        nodes = [*data.pop("resources", [])]
 
-        node = self.node_class(**data)
-        self.store_repo.save(node)
+        for child_cluster in data.pop("clusters", []):
+            nodes.append(cls.unify_diagram_nodes(child_cluster))
 
-        return {"uid": node.uid}
-
-    def get(self, uid: str) -> Union[Cluster, Resource]:
-
-        node = self.store_repo.get(uid)
-
-        if not node:
-            raise NodeNotFoundError(node_type=self.node_class.__name__)
-
-        return node
-
-    def update(self, command: Union[ClusterUpdateCommand, ResourceUpdateCommand]) -> bool:
-
-        """
-        Update a node's basic information
-        """
-
-        node = self.store_repo.get(command.uid)
-
-        updates = command.model_dump(exclude_unset=True)
-
-        for key, value in updates.items():
-            setattr(node, key, value)
-
-        self.store_repo.save(node)
-        return True
-
-    def delete(self, uid: str) -> bool:
-
-        """
-        Delete a node
-        """
-
-        node = self.store_repo.get(uid)
-
-        if not node:
-            raise NodeNotFoundError(node_type=self.node_class.__name__)
-
-        self.store_repo.delete(node)
-
-        return True
-
-
-class ClusterCRUDLogic(NodeCRUDLogic):
-    
-    """
-    Logic layer for managing clusters
-    """
-
-    node_class: Type[Node] = Cluster
-
-
-class ResourceCRUDLogic(NodeCRUDLogic):
-    """
-    Logic layer for managing resources in diagrams
-    """
-
-    node_class: Type[Node] = Resource
-
-
-class EdgeCRUDLogic(CRUDLogic):
-    """Logic layer for managing edges"""
-
-    def create(self, command: EdgeCreateCommand) -> dict:
-
-        """
-            Create a edge and persist
-        """
-
-        data = command.model_dump()
-
-        edge = Edge(**data)
-        self.store_repo.save(edge)
-
-        return {"uid": edge.uid}
-
-    def get(self, uid: str) -> Edge:
-        """Get an edge from persistence layer"""
-
-        edge = self.store_repo.get(uid)
-
-        if not edge:
-            raise EdgeNotFoundError
-
-        return edge
-
-    def update(self, command: EdgeUpdateCommand) -> bool:
-
-        """
-        Update an edge's basic information
-        """
-
-        edge = self.store_repo.get(command.uid)
-
-        updates = command.model_dump(exclude_unset=True)
-
-        for key, value in updates.items():
-            setattr(edge, key, value)
-
-        self.store_repo.save(edge)
-        return True
-
-    def delete(self, uid: str) -> bool:
-
-        """
-        Delete an edge
-        """
-
-        edge = self.store_repo.get(uid)
-
-        if not edge:
-            raise EdgeNotFoundError
-
-        self.store_repo.delete(edge)
-
-        return True
+        data["nodes"] = nodes
+        return data
