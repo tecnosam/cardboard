@@ -19,11 +19,39 @@ class ProviderClass(Enum):
     CUSTOM = "custom"
 
 
+class ResourceCreateCommand(AbstractCommand):
+
+    name: str
+    resource_class: str
+    metadata: dict = Field(default_factory=dict)
+
+
+class ClusterCreateCommand(AbstractCommand):
+
+    name: str
+    metadata: dict = Field(default_factory=dict)
+    resources: List[ResourceCreateCommand] = Field(default_factory=list)
+    clusters: List["ClusterCreateCommand"] = Field(default_factory=list)
+
+
+class EdgeCreateCommand(AbstractCommand):
+
+    tag: str
+
+    start_node_uid: UUID
+    end_node_uid: UUID
+    is_bidirectional: bool = False
+
+
 class DiagramCreateCommand(AbstractCommand):
 
     name: str
     owner: Optional[str] = Field(default=None)
     provider_class: ProviderClass
+
+    edges: List[EdgeCreateCommand] = Field(default_factory=list)
+    clusters: List[ClusterCreateCommand] = Field(default_factory=list)
+    resources: List[ResourceCreateCommand] = Field(default_factory=list)
 
 
 class DiagramUpdateCommand(AbstractCommand):
@@ -33,43 +61,6 @@ class DiagramUpdateCommand(AbstractCommand):
     owner: Optional[str]
     provider_class: Optional[str]
 
-
-class ClusterCreateCommand(AbstractCommand):
-
-    name: str
-    metadata: dict
-
-
-class NodeUpdateCommand(AbstractCommand):
-
-    uid: str
-
-
-class ClusterUpdateCommand(NodeUpdateCommand):
-
-    name: Optional[str]
-    metadata: dict = Field(default_factory=lambda: {})
-
-
-class ResourceCreateCommand(AbstractCommand):
-
-    name: str
-    resource_class: str
-    metadata: dict = Field(default_factory=lambda: {})
-
-
-class ResourceUpdateCommand(NodeUpdateCommand):
-
-    name: Optional[str]
-    resource_class: Optional[str]
-    metadata: dict = Field(default_factory=lambda: {})
-
-
-class EdgeCreateCommand(AbstractCommand):
-
-    ...
-
-
-class EdgeUpdateCommand(AbstractCommand):
-
-    uid: str
+    edges: List[EdgeCreateCommand] = Field(default_factory=list)
+    clusters: List[ClusterCreateCommand] = Field(default_factory=list)
+    resources: List[ResourceCreateCommand] = Field(default_factory=list)
