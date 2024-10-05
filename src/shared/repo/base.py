@@ -6,7 +6,7 @@ class AbstractDomainEntityPersistenceRepository(ABC):
     """Abstraction for persisting domain entities"""
 
     @abstractmethod
-    def get(self, uid: Any, *args, **kwargs) -> Optional[Any]:
+    def get(self, uid: Any) -> Optional[Any]:
 
         """Get a domain entity by it's ID"""
 

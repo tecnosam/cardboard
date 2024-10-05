@@ -5,7 +5,6 @@ from pydantic import BaseModel
 from src.diagram.domain import Diagram
 from src.shared.services.db.mongo import MongoDBService
 from src.shared.repo.base import AbstractDomainEntityPersistenceRepository
-from src.diagram.repo.base import AbstractDiagramPersistenceRepository
 
 
 class BaseMongoDBCollectionPersistenceRepository(AbstractDomainEntityPersistenceRepository):
