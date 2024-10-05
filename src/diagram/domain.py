@@ -17,7 +17,7 @@ class Node(Base):
     """
 
     name: str
-    metadata: dict  # Aditional provisioning configurations
+    metadata: dict = Field(default_factory=dict)  # Aditional provisioning configurations
 
 
 class Edge(Base):
@@ -28,8 +28,8 @@ class Edge(Base):
 
     tag: str
 
-    start_node: Node
-    end_node: Node
+    start_node_uid: UUID
+    end_node_uid: UUID
 
     is_bidirectional: bool = False  # Is this a bidirectional edge?
 
@@ -41,8 +41,8 @@ class Diagram(Base):
 
     provider_class: str  # What kind of diagram is this (AWS, Azure, GCP, K8s, ERD, etc)
 
-    nodes: List[Node]
-    edges: List[Edge]
+    nodes: List[Node] = Field(default_factory=list)
+    edges: List[Edge] = Field(default_factory=list)
 
 
 # Node classes
@@ -52,7 +52,8 @@ class Cluster(Node):
     Represents a group of Resources or other clusters.
     """
 
-    children: List[Node]
+    node_type: str = "cluster"
+    children: List[Node] = Field(default_factory=list)
 
 
 class Resource(Node):
@@ -61,4 +62,5 @@ class Resource(Node):
     Represents a single resource. Could be part of a cluster
     """
 
+    node_type: str = "resource"
     resource_class: str  # What kind of resource is this (e.g AWS EC2, Azure Container Registry, K8 Pod)
