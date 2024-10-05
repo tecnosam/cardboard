@@ -1,5 +1,5 @@
 
-from typing import Optional, Type
+from typing import Optional, Type, List
 from pydantic import BaseModel
 
 from src.diagram.domain import Diagram, Node, Cluster, Resource
@@ -18,7 +18,7 @@ class DiagramMongoDBPersistenceRepository(BaseMongoDBCollectionPersistenceReposi
         values = {key: document[key] for key in keys if key in document}
 
         diagram = Diagram(**values)
-        nodes = []
+        nodes: List[Node] = []
 
         for node in document.get("nodes", []):
 

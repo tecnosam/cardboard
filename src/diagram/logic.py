@@ -9,12 +9,8 @@ from src.diagram.commands import (
     DiagramCreateCommand,
     DiagramUpdateCommand,
     ClusterCreateCommand,
-    ClusterUpdateCommand,
     ResourceCreateCommand,
-    ResourceUpdateCommand,
     EdgeCreateCommand,
-    EdgeUpdateCommand,
-    NodeUpdateCommand
 )
 
 from src.diagram.queries import (
